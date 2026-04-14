@@ -1,0 +1,42 @@
+resources:
+  jobs:
+    ETL_retail_store_sales:
+      name: ETL retail store sales
+      trigger:
+        pause_status: UNPAUSED
+        periodic:
+          interval: 1
+          unit: DAYS
+      tasks:
+        - task_key: raw_to_bronze
+          notebook_task:
+            notebook_path: /Workspace/Users/ivan.logon01@gmail.com/learning-databricks/notebooks/full_bronze_retail_store_sales
+            source: WORKSPACE
+        - task_key: bronze_to_silver
+          depends_on:
+            - task_key: raw_to_bronze
+          notebook_task:
+            notebook_path: /Workspace/Users/ivan.logon01@gmail.com/learning-databricks/notebooks/full_silver_retail_store_sales
+            source: WORKSPACE
+        - task_key: silver_to_gold
+          depends_on:
+            - task_key: bronze_to_silver
+          notebook_task:
+            notebook_path: /Workspace/Users/ivan.logon01@gmail.com/learning-databricks/notebooks/full_gold_retail_store_sales
+            source: WORKSPACE
+        - task_key: synthetic_data
+          depends_on:
+            - task_key: silver_to_gold
+          notebook_task:
+            notebook_path: /Workspace/Users/ivan.logon01@gmail.com/learning-databricks/notebooks/full_gold_synthetic
+            source: WORKSPACE
+        - task_key: analytics
+          depends_on:
+            - task_key: synthetic_data
+          sql_task:
+            query:
+              query_id: bc420247-8404-4801-9f31-1ca8c1065acd
+            warehouse_id: 695ea7ee4cb80d0c
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED

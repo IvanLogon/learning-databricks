@@ -82,23 +82,27 @@ Governed Tags → Column Tagging → ABAC Policies → Runtime Enforcement
 ## 📁 Project Structure
 
 ```
-home
+home/
 ├── readme.md
-└── alerts/
-    ├── Drops from bronze to silver
-└── queries/
-    ├── mask.dbquery.ipynb # SQL query: ABAC policy setup
-    ├── analytics.dbquery.ipynb # SQL queries: Aggregations on gold tables
-└── notebooks/
-    ├── full_bronze_retail_store_sales          # Bronze: Full load
-    ├── incremental_bronze_retail_store_sales   # Bronze: Incremental load
-    ├── full_silver_retail_store_sales          # Silver: Data quality transformations
-    ├── full_gold_retail_store_sales            # Gold: Business aggregations
-    └── full_gold_synthetic                     # Gold: Customer dimension with synthetic data
+├── alerts/
+│   └── Drops from bronze to silver        # Data quality monitoring alert
+├── queries/
+│   ├── mask.dbquery.ipynb                 # SQL: ABAC policy setup
+│   └── analytics.dbquery.ipynb            # SQL: Aggregations on gold tables
+├── notebooks/
+│   ├── full_bronze_retail_store_sales     # Bronze: Full load
+│   ├── incremental_bronze_retail_store_sales  # Bronze: Incremental load
+│   ├── full_silver_retail_store_sales     # Silver: Data quality transformations
+│   ├── full_gold_retail_store_sales       # Gold: Business aggregations
+│   └── full_gold_synthetic                # Gold: Customer dimension with synthetic data
+└── jobs/
+    └── etl.yml            # Automated workflow (daily schedule)
 
 Data Location:
 └── /Volumes/sales/default/raw/retail_store_sales.csv
 ```
+
+**Job Workflow**: The ETL job orchestrates the complete medallion pipeline with sequential task dependencies, running daily to refresh all layers from raw data to final analytics tables.
 
 ## 🚀 Setup & Configuration
 
