@@ -1,0 +1,28 @@
+{
+  "evaluation": {
+    "source": {
+      "name": "transaction_id",
+      "display": "source",
+      "aggregation": "COUNT"
+    },
+    "comparison_operator": "GREATER_THAN",
+    "threshold": {
+      "value": {
+        "double_value": 1000.0
+      }
+    },
+    "empty_result_state": "OK",
+    "notification": {}
+  },
+  "schedule": {
+    "quartz_cron_schedule": "42 0 0 * * ?",
+    "timezone_id": "Europe/Madrid"
+  },
+  "query_lines": [
+    "SELECT sales.bronze.retail_store_sales.transaction_id AS transaction_id",
+    "FROM sales.bronze.retail_store_sales",
+    "LEFT JOIN sales.silver.retail_store_sales",
+    "ON sales.bronze.retail_store_sales.transaction_id = sales.silver.retail_store_sales.transaction_id",
+    "WHERE sales.silver.retail_store_sales.transaction_id IS NULL;"
+  ]
+}
