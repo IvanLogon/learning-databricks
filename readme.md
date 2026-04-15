@@ -95,6 +95,8 @@ home/
 │   ├── full_silver_retail_store_sales     # Silver: Data quality transformations
 │   ├── full_gold_retail_store_sales       # Gold: Business aggregations
 │   └── full_gold_synthetic                # Gold: Customer dimension with synthetic data
+├── tests/
+│   ├── test_silver.py     # Data quality test suite for silver layer
 └── jobs/
     └── etl.yml            # Automated workflow (daily schedule)
 
